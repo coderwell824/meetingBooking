@@ -13,3 +13,10 @@ type Booking struct {
 	CreateTime time.Time `json:"createTime"`                      //创建时间
 	UpdateTime time.Time `json:"updateTime"`                      //更新时间
 }
+
+//BookingAttention 预定-参会中间表
+type BookingAttention struct {
+	ID        uint `json:"id"`
+	UserID    uint `json:"userId"`
+	BookingID uint `json:"bookingId"`
+}

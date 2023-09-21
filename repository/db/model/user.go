@@ -10,10 +10,11 @@ type User struct {
 	Email       string    `json:"email" gorm:"type:varchar(50);comment:邮箱"`
 	AvatarUrl   string    `json:"avatarUrl" gorm:"type:varchar(100);comment:头像"`
 	PhoneNumber string    `json:"phoneNumber" gorm:"type:varchar(20);comment:手机号"`
-	IsFrozen    bool      `json:"isFrozen" gorm:"type:boolean;comment:是否被冻结"`
-	IsAdmin     bool      `json:"isAdmin" gorm:"type:boolean;comment:是否为管理员"`
+	IsFrozen    bool      `json:"isFrozen" gorm:"type:boolean;comment:是否被冻结;default:false"`
+	IsAdmin     bool      `json:"isAdmin" gorm:"type:boolean;comment:是否为管理员;default:false"`
 	CreateTime  time.Time `json:"createTime"`
 	UpdateTime  time.Time `json:"updateTime"`
+	Roles       []Roles
 }
 
 const (

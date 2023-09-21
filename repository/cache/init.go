@@ -5,6 +5,7 @@ import (
 	"github.com/go-redis/redis"
 	"meetingBooking/config"
 	"strconv"
+	"time"
 )
 
 var RedisClient *redis.Client
@@ -25,4 +26,19 @@ func RedisInit() {
 	
 	RedisClient = client
 	fmt.Println("redis 连接")
+}
+
+func RedisGetKey(key string) (string, error) {
+	if val, err := RedisClient.Get(key).Result(); err != nil {
+		return "", err
+	} else {
+		return val, nil
+	}
+}
+
+func RedisSetKey(key string, val interface{}, ttl time.Duration) error {
+	if _, err := RedisClient.Set(key, val, ttl).Result(); err != nil {
+		return err
+	}
+	return nil
 }
