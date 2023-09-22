@@ -11,13 +11,11 @@ type Response struct {
 
 // RespSuccessWithData   带data成功返回
 func RespSuccessWithData(data interface{}) *Response {
-	
 	r := &Response{
 		Code:    http.StatusOK,
 		Data:    data,
 		Message: "操作成功",
 	}
-	
 	return r
 }
 
