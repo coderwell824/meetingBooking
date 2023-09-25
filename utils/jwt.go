@@ -29,7 +29,7 @@ func GenerateToken(id uint, username string, authority int) Token {
 		nowTime := time.Now()
 		var expireTime time.Time
 		if i == 0 {
-			expireTime = nowTime.Add(1 * time.Minute)
+			expireTime = nowTime.Add(80 * time.Minute)
 		} else {
 			expireTime = nowTime.Add(24 * time.Hour)
 		}

@@ -70,3 +70,20 @@ func UserLoginHandler() gin.HandlerFunc {
 		}
 	}
 }
+
+func GetUserListHandler() gin.HandlerFunc {
+	var req reqValidator.ReqUserList
+	return func(ctx *gin.Context) {
+		if err := ctx.ShouldBindQuery(&req); err != nil {
+			msg := utils.GetValidMsg(err, &req)
+			ctx.JSON(http.StatusBadRequest, format.RespErrorWithData(errors.New(msg)))
+		} else {
+			resp, respErr := services.UserList(ctx.Request.Context(), &req)
+			if respErr != nil {
+				ctx.JSON(http.StatusInternalServerError, format.RespErrorWithData(respErr))
+			} else {
+				ctx.JSON(http.StatusOK, resp)
+			}
+		}
+	}
+}

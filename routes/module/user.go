@@ -21,9 +21,7 @@ func LoadUserRoute(v1 *gin.RouterGroup) {
 	})
 	user.GET("sendEmail", api.SendEmailHandler())
 	
-	user.GET("list", func(context *gin.Context) {
-		context.JSON(200, "success")
-	})
+	user.GET("list", api.GetUserListHandler())
 	
 	user.GET("freeze", func(context *gin.Context) {
 		context.JSON(200, "success")

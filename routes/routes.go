@@ -22,9 +22,11 @@ func NewRouter() *gin.Engine {
 	
 	module.LoadUserRoute(v1)
 	authed := v1.Group("/") //登录保护
-	//authed.Use(middleware.JWT())
-	module.LoadRoomsRoute(authed)
+	authed.Use(middleware.JWT())
+	
 	module.LoadBookingsRoute(authed)
+	module.LoadRolesRoute(authed)
+	module.LoadRoomsRoute(authed)
 	module.LoadStatisticsRoute(authed)
 	
 	return r

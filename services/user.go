@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"fmt"
 	"gorm.io/gorm"
 	"log"
 	"meetingBooking/pkg/format"
@@ -54,6 +53,10 @@ func UserLogin(ctx context.Context, req *reqValidator.ReqLogin) (response interf
 	if err != nil {
 		log.Println("Error generating access token")
 	}
-	fmt.Println(token)
 	return format.RespSuccessWithData(token), nil
+}
+
+func UserList(ctx context.Context, req *reqValidator.ReqUserList) (response interface{}, err error) {
+	
+	return
 }
