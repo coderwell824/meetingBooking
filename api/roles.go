@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func CreateRole() gin.HandlerFunc {
+func CreateRoleHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var req reqValidator.CreateRoleReq
 		if err := ctx.ShouldBind(&req); err != nil {

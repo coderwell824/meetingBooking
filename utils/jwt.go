@@ -23,17 +23,17 @@ type Token struct {
 
 // GenerateToken 颁发token
 func GenerateToken(id uint, username string, authority int) Token {
-	
+
 	var tokenObj Token
 	for i := 0; i < 2; i++ {
 		nowTime := time.Now()
 		var expireTime time.Time
 		if i == 0 {
-			expireTime = nowTime.Add(80 * time.Minute)
+			expireTime = nowTime.Add(8000 * time.Minute)
 		} else {
 			expireTime = nowTime.Add(24 * time.Hour)
 		}
-		
+
 		claims := Claims{
 			Id:        id,
 			Username:  username,
@@ -43,7 +43,7 @@ func GenerateToken(id uint, username string, authority int) Token {
 				Issuer:    "meeting_booking",
 			},
 		}
-		
+
 		tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 		token, err := tokenClaims.SignedString(jwtSecret)
 		if err != nil {
@@ -58,7 +58,7 @@ func GenerateToken(id uint, username string, authority int) Token {
 	return tokenObj
 }
 
-//ParseToken  验证用户token
+// ParseToken  验证用户token
 func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil

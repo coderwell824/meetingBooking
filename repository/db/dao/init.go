@@ -16,7 +16,7 @@ import (
 var _db *gorm.DB
 
 func MySqlInit() {
-	connection := strings.Join([]string{config.DbUser, ":", config.DbPassword, "@tcp(", config.DbHost, ":", config.DbPort, ")/", config.DbName, "?charset=utf8&parseTime=true"}, "")
+	connection := strings.Join([]string{config.DbUser, ":", config.DbPassword, "@tcp(", config.DbHost, ":", config.DbPort, ")/", config.DbName, "?charset=utf8&parseTime=True&loc=Local"}, "")
 	//数据库日志
 	var ormLogger logger.Interface
 	if gin.Mode() == "debug" {
@@ -24,7 +24,7 @@ func MySqlInit() {
 	} else {
 		ormLogger = logger.Default
 	}
-	
+
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       connection,
 		DefaultStringSize:         256,
@@ -38,11 +38,11 @@ func MySqlInit() {
 			SingularTable: true, // 表明不加s
 		},
 	})
-	
+
 	if err != nil {
 		panic(err)
 	}
-	
+
 	sqlDb, _ := db.DB()
 	sqlDb.SetMaxOpenConns(20)  // 设置连接池，空闲
 	sqlDb.SetMaxOpenConns(100) // 打开
@@ -50,7 +50,7 @@ func MySqlInit() {
 	_db = db
 	fmt.Println("mysql连接成功")
 	migration()
-	
+
 }
 
 func NewDBClient(ctx context.Context) *gorm.DB {

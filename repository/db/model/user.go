@@ -17,7 +17,9 @@ type User struct {
 	IsAdmin     bool      `json:"isAdmin" gorm:"type:boolean;comment:是否为管理员;default:false"`
 	CreatedAt   time.Time `json:"createTime"` //字段使用CreatedAt，不是CreatedTime
 	UpdatedAt   time.Time `json:"updateTime"`
-	//RoleID      uint
+	RoleID      *uint     `json:"roleId" gorm:"column:role_id"`
+	Role        Role      // 属于
+	//Bookings    []Booking `json:"bookings" gorm:"many2many:booking_attention;joinForeignKey:UserID;JoinReferences:BookingID"`
 }
 
 const (
@@ -25,13 +27,12 @@ const (
 )
 
 // SetPassword 加密密码
-func (user *User) SetPassword(password string) error {
+func (user *User) SetPassword(password string) (bcryptPassword string, err error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), PassWordDepth)
 	if err != nil {
-		return err
+		return "", err
 	}
-	user.Password = string(bytes)
-	return nil
+	return string(bytes), nil
 }
 
 // CheckPassword 校验密码

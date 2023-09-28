@@ -14,6 +14,16 @@ type ReqLogin struct {
 }
 
 type ReqUserList struct {
-	PageNum  uint `form:"pageNum" binding:"required" msg:"pageNum不能为空"` //Query参数使用的是Form
-	PageSize uint `form:"pageSize" binding:"required" msg:"pageSize不能为空"`
+	PageNum  int `form:"pageNum" binding:"required" msg:"pageNum不能为空"` //Query参数使用的是Form
+	PageSize int `form:"pageSize" binding:"required" msg:"pageSize不能为空"`
+}
+type ReqUpdatePassword struct {
+	Password    string `json:"password" binding:"required,min=6" msg:"密码长度至少6位"`
+	NewPassword string `json:"newPassword" binding:"required,min=6" msg:"新密码长度至少6位"`
+}
+type ReqUpdateInfo struct {
+	Nickname    string `json:"nickname" binding:"required" msg:"昵称不能为空"`
+	Email       string `json:"email" binding:"required" msg:"邮箱不能为空"`
+	AvatarUrl   string `json:"avatarUrl" binding:"required" msg:"头像不能为空"`
+	PhoneNumber string `json:"phoneNumber" binding:"required" msg:"手机号不能为空"`
 }

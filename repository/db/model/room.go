@@ -10,6 +10,6 @@ type Room struct {
 	Equipment   string    `json:"equipment" gorm:"type:varchar(50)"`    //会议室设备
 	Description string    `json:"description" gorm:"type:varchar(100)"` //会议室描述
 	IsBooked    bool      `json:"isBooked"`                             //是否被预订
-	CreateTime  time.Time `json:"createTime"`                           //创建时间
-	UpdateTime  time.Time `json:"updateTime"`                           //更新时间
+	CreatedAt   time.Time `json:"createTime"`                           //创建时间
+	UpdatedAt   time.Time `json:"updateTime"`                           //更新时间
 }

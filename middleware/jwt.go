@@ -16,7 +16,8 @@ func JWT() gin.HandlerFunc {
 		token := ctx.GetHeader("Authorization")
 		if token == "" {
 			code = http.StatusNotFound
-			ctx.JSON(http.StatusBadRequest, format.RespErrorWithData(errors.New("缺少token"))) //TODO: 返回格式不对
+			ctx.JSON(http.StatusBadRequest, format.RespErrorWithData(errors.New("缺少token")))
+			ctx.Abort()
 			return
 		}
 		token = strings.Split(token, " ")[1]
@@ -28,6 +29,7 @@ func JWT() gin.HandlerFunc {
 		}
 		if code != 200 {
 			ctx.JSON(http.StatusOK, format.RespErrorWithData(errors.New("token已过期")))
+			ctx.Abort()
 			return
 		}
 		ctx.Request = ctx.Request.WithContext(utils.NewContext(ctx.Request.Context(), &utils.UserInfo{Id: claims.Id}))
