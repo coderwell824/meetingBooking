@@ -11,6 +11,7 @@ func main() {
 	loadingConfig()
 	r := routes.NewRouter()
 	_ = r.Run(config.HttpPort)
+
 }
 
 func loadingConfig() {
