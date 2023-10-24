@@ -1,0 +1,33 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API文档",
+        "title": "go_server API文档",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "127.0.0.01:8888",
+    "basePath": "/api/v1",
+    "paths": {
+        "/app/check_app_upgrade": {
+            "post": {
+                "description": "检查 APP 包是否需要升级。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "APP 接口。"
+                ],
+                "summary": "检查 APP 包是否需要升级。",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}

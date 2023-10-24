@@ -1,0 +1,22 @@
+basePath: /api/v1
+host: 127.0.0.01:8888
+info:
+  contact: {}
+  description: API文档
+  title: go_server API文档
+  version: "1.0"
+paths:
+  /app/check_app_upgrade:
+    post:
+      consumes:
+      - application/json
+      description: 检查 APP 包是否需要升级。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: 检查 APP 包是否需要升级。
+      tags:
+      - APP 接口。
+swagger: "2.0"

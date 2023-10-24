@@ -15,7 +15,7 @@ import (
 
 var _db *gorm.DB
 
-func MySqlInit() {
+func InitMysqlConnection() {
 	connection := strings.Join([]string{config.DbUser, ":", config.DbPassword, "@tcp(", config.DbHost, ":", config.DbPort, ")/", config.DbName, "?charset=utf8&parseTime=True&loc=Local"}, "")
 	//数据库日志
 	var ormLogger logger.Interface
@@ -48,8 +48,8 @@ func MySqlInit() {
 	sqlDb.SetMaxOpenConns(100) // 打开
 	sqlDb.SetConnMaxLifetime(30 * time.Second)
 	_db = db
-	fmt.Println("mysql连接成功")
 	migration()
+	fmt.Println("mysql连接成功")
 
 }
 

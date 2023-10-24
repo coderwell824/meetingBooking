@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"log"
+	"meetingBooking/config"
+	"meetingBooking/consts"
 	"meetingBooking/repository/db/dao"
 	"meetingBooking/repository/db/model"
 	"meetingBooking/reqValidator"
@@ -25,7 +27,7 @@ func (u UserService) UserRegister(ctx context.Context, req *reqValidator.ReqRegi
 	user, err := userDao.FindUserByUsername(req.Username)
 	switch err {
 	case gorm.ErrRecordNotFound:
-
+		
 		newPassword, err := user.SetPassword(req.Password)
 		if err != nil {
 			log.Println("Error setting")
@@ -49,7 +51,7 @@ func (u UserService) UserRegister(ctx context.Context, req *reqValidator.ReqRegi
 	}
 }
 func UserLogin(ctx context.Context, req *reqValidator.ReqLogin) (response interface{}, err error) {
-
+	
 	userDao := dao.NewUserDao(ctx)
 	user, err := userDao.FindUserByUsername(req.Username)
 	if err != nil {
@@ -68,7 +70,7 @@ func UserLogin(ctx context.Context, req *reqValidator.ReqLogin) (response interf
 }
 
 func UserList(ctx context.Context, req *reqValidator.ReqUserList) (resp interface{}, total int64, err error) {
-
+	
 	userDao := dao.NewUserDao(ctx)
 	resp, total, err = userDao.UserList(req.PageNum, req.PageSize)
 	if err != nil {
@@ -77,7 +79,7 @@ func UserList(ctx context.Context, req *reqValidator.ReqUserList) (resp interfac
 	return
 }
 func UserUpdatePassword(ctx context.Context, req *reqValidator.ReqUpdatePassword, userId uint) (err error) {
-
+	
 	userDao := dao.NewUserDao(ctx)
 	user, err := userDao.FindUserByUserId(userId)
 	if err != nil {
@@ -95,7 +97,7 @@ func UserUpdatePassword(ctx context.Context, req *reqValidator.ReqUpdatePassword
 }
 
 func DeleteUserById(ctx context.Context, userId uint) (resp interface{}, err error) {
-
+	
 	u, err := utils.GetUserInfo(ctx)
 	if err != nil {
 		log.Println(err)
@@ -112,15 +114,11 @@ func DeleteUserById(ctx context.Context, userId uint) (resp interface{}, err err
 		log.Println("delete user failed")
 	}
 	return "删除用户成功", nil
-
+	
 }
 
 func UpdateUserInfo(ctx context.Context, req *reqValidator.ReqUpdateInfo) (resp interface{}, err error) {
 	u, err := utils.GetUserInfo(ctx)
-	if err != nil {
-		log.Println(err)
-		return
-	}
 	userDao := dao.NewUserDao(ctx)
 	user, err := userDao.FindUserByUserId(u.Id)
 	fmt.Println(user, "update user")
@@ -128,6 +126,36 @@ func UpdateUserInfo(ctx context.Context, req *reqValidator.ReqUpdateInfo) (resp 
 }
 
 func UploadAvatarService(ctx context.Context, file multipart.File, fileSize int64) (resp interface{}, err error) {
-
+	var path string
+	
+	u, err := utils.GetUserInfo(ctx)
+	userDao := dao.NewUserDao(ctx)
+	user, err := userDao.FindUserByUserId(u.Id)
+	if err != nil {
+		err = errors.New("用户信息获取失败")
+		return
+	}
+	
+	//兼容两种存储方式
+	if config.UploadModel == consts.UploadModelLocal {
+		path, err = utils.UploadAvatarToLocalStatic(file, user.ID, user.Username)
+	} else {
+		path, err = utils.UploadImageToQiQiu(file, fileSize)
+	}
+	
+	if err != nil {
+		err = errors.New("图片存储失败")
+		return
+	}
+	
+	user.AvatarUrl = path
+	err = userDao.UpdateUserById(user.ID, user)
+	if err != nil {
+		err = errors.New("图片更新失败")
+		return
+	}
+	
+	resp = "图片上传成功"
+	
 	return
 }

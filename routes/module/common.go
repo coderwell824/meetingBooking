@@ -13,5 +13,6 @@ func LoadCommonRoute(v1 *gin.RouterGroup) {
 	common.POST("addPos", api.AddPosHandler())
 	common.GET("pos/:name", api.GetPosHandler())
 	common.GET("pos/all", api.GetPosAllHandler())
-	common.GET("nearbySearch", api.GetNearbySearchHandler())
+	common.GET("nearbySearch", api.GetNearbySearchHandler)
+	common.GET("ws", api.GetWsHandler)
 }

@@ -7,6 +7,7 @@ import (
 	"meetingBooking/pkg/format"
 	"meetingBooking/repository/cache"
 	"meetingBooking/reqValidator"
+	"meetingBooking/services/ws"
 	"meetingBooking/utils"
 	"net/http"
 	"os"
@@ -90,19 +91,25 @@ func GetPosAllHandler() gin.HandlerFunc {
 	}
 }
 
-func GetNearbySearchHandler() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		var req reqValidator.ReqSearchPos
-		if err := ctx.ShouldBindQuery(&req); err != nil {
-			msg := utils.GetValidMsg(err, &req)
-			ctx.JSON(http.StatusBadRequest, format.RespErrorWithData(errors.New(msg)))
-		} else {
-			resRadius, err := cache.RedisGeoRadius(req.Longitude, req.Latitude, req.Radius)
-			if err != nil {
-				ctx.JSON(http.StatusBadGateway, format.RespErrorWithData(errors.New("范围信息查询失败")))
-			}
-			ctx.JSON(http.StatusOK, format.RespSuccessWithData(resRadius))
-			
+func GetNearbySearchHandler(ctx *gin.Context) {
+	var req reqValidator.ReqSearchPos
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		msg := utils.GetValidMsg(err, &req)
+		ctx.JSON(http.StatusBadRequest, format.RespErrorWithData(errors.New(msg)))
+	} else {
+		resRadius, err := cache.RedisGeoRadius(req.Longitude, req.Latitude, req.Radius)
+		if err != nil {
+			ctx.JSON(http.StatusBadGateway, format.RespErrorWithData(errors.New("范围信息查询失败")))
 		}
+		ctx.JSON(http.StatusOK, format.RespSuccessWithData(resRadius))
 	}
+}
+
+func GetWsHandler(ctx *gin.Context) {
+	uId := ctx.Query("uid")
+	toUid := ctx.Query("toUid")
+	if uId == "" && toUid == "" {
+		ctx.JSON(http.StatusBadRequest, format.RespErrorWithData(errors.New("参数缺失")))
+	}
+	ws.ConnectionWsService(ctx, uId, toUid)
 }

@@ -11,8 +11,8 @@ import (
 
 var RedisClient *redis.Client
 
-// RedisInit 初始化Redis
-func RedisInit() {
+// InitRedisConnection 初始化Redis
+func InitRedisConnection() {
 	db, _ := strconv.ParseUint(config.RedisDbName, 10, 64)
 	client := redis.NewClient(&redis.Options{
 		Addr:     config.RedisAddr,
@@ -26,7 +26,7 @@ func RedisInit() {
 	}
 
 	RedisClient = client
-	fmt.Println("redis 连接")
+	fmt.Println("redis 连接成功")
 }
 
 func RedisGetKey(key string) (string, error) {

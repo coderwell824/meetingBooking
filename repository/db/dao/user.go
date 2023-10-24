@@ -61,6 +61,12 @@ func (dao *UserDao) UpdatePassword(userId uint, newPassword string) (err error) 
 	return
 }
 
+// UpdateUserById 根据 id 更新用户信息
+func (dao *UserDao) UpdateUserById(uId uint, user *model.User) (err error) {
+	return dao.DB.Model(&model.User{}).Where("user_id=?", uId).
+		Updates(&user).Error
+}
+
 func (dao *UserDao) DeleteUser(userId uint) (err error) {
 	fmt.Println("DeleteUser", userId)
 	err = dao.DB.Delete(&model.User{}, userId).Error

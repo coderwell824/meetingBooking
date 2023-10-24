@@ -15,3 +15,9 @@ type ReqSearchPos struct {
 	Latitude  float64 `form:"latitude" binding:"required" msg:"纬度不能为空"`
 	Radius    float64 `form:"radius" binding:"required" msg:"纬度不能为空"`
 }
+
+type ReqSendMessage struct {
+	UId   string `form:"uId" binding:"required" msg:"用户id不能为空"`
+	ToUid string `form:"toUid" binding:"required" msg:"接受者Id不能为空"`
+	//Content string `json:"content" binding:"required" msg:"内容不能为空"`
+}
