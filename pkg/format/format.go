@@ -20,13 +20,13 @@ func RespSuccessWithData(data interface{}) *Response {
 	return r
 }
 
-// RespListWithData   带data成功返回
+// RespListWithData   带List成功返回
 func RespListWithData(data interface{}, total int64) *Response {
 	r := &Response{
 		Code:    http.StatusOK,
 		Data:    data,
 		Total:   total,
-		Message: "操作成功",
+		Message: "查询成功",
 	}
 	return r
 }

@@ -39,5 +39,7 @@ func NewRouter() *gin.Engine {
 	module.LoadRoomsRoute(authed)
 	module.LoadStatisticsRoute(authed)
 	module.LoadCategoriesRoute(authed)
+	module.LoadProductRoute(authed)
+
 	return r
 }

@@ -16,6 +16,8 @@ func migration() {
 		&model.Room{},
 		&model.Booking{},
 		&model.Category{},
+		&model.Product{},
+		&model.ProductImg{},
 	)
 
 	if err != nil {
